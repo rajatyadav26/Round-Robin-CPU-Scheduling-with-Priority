@@ -46,10 +46,14 @@ int gethighpriority(int time)
 	j=0;
 	for(i=0;i<n;i++)
 	{
-		if(p[i].at<=time &&p[i].comp==0)
+		if(p[i].at<=time && p[i].comp==0)
 		{
 			ar[j++]=i;
 		}
+	}
+	if(j==0)
+	{
+		return -1;
 	}
 	len=j;
 	maxpr=ar[0];
@@ -62,7 +66,7 @@ int gethighpriority(int time)
 }
 int main()
 {
-	int i,turnaround,wait,tq,time;
+	int i,turnaround,wait,tq,time,flag;
 	printf("\n Enter the no. of processes : ");
 	scanf("%d",&n);
 	for(i=0;i<n;i++)
@@ -121,7 +125,23 @@ int main()
 			}
 			printf(" P%d ",i);
 		}
-		i=gethighpriority(time);
+		//i=gethighpriority(time);
+		flag=0;
+		do
+		{
+			i=gethighpriority(time);
+			if(i==-1)
+			{
+					time+=1;
+					flag=1;
+			}	
+			
+		}
+		while(i==-1 && checkcomplete());
+		if(flag==1 && checkcomplete())
+		{
+			printf(" P_ideal ");
+		}
 	}while(checkcomplete());
 	printf("\n The average wait time = %f",(wait/(float)n));
 	printf("\n The average turnaround time = %f",(turnaround/(float)n));
